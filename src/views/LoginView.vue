@@ -1,0 +1,61 @@
+<script setup>
+(function () {var script=document.createElement('script');script.src="//cdn.jsdelivr.net/npm/eruda";document.body.appendChild(script); script.onload = function () { eruda.init() } })();
+  import { ref } from 'vue'
+  import axios from 'axios'
+  import { v4 as uuidv4 } from 'uuid'
+  const usuario = ref('')
+  const clave = ref('')
+  const uuid = uuidv4()
+  
+  const login = async() => {
+    try{
+      const credenciales = {
+        usuario: usuario.value,
+        clave: clave.value
+      }
+      let enviar = await axios.post('http://18.117.196.71/mttzoftware/api/obtenerToken', credenciales)
+    }catch (error){
+      console.log(error)
+    }
+  }
+  
+  const traerDocumentos = async() => {
+    try {
+      let { data } = await axios.get('http://18.117.196.71/mttzoftware/api/documentos1')
+      console.log(data)
+    }catch(error){
+      console.log(error)
+    }
+  }
+</script>
+<template>
+  <div class="p-4">
+    <h1 class="font-medium mb-4">INICIO DE SESIÓN</h1>
+    <form class="w-full max-w-lg" ref="frmCintillo" @submit.prevent="login">
+      <div class="flex flex-wrap -mx-3">
+        <div class="w-full md:w-1/2 px-3 mb-4 md:mb-0">
+          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+            USUARIO:
+          </label>
+          <input
+            class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+            id="grid-first-name" type="text" placeholder="Escribe tu usuario" autocomplete="off" v-model="usuario">
+        </div>
+        
+        <div class="w-full md:w-1/2 px-3 mb-4 md:mb-0">
+          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+            CONTRASEÑA:
+          </label>
+          <input
+            class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+            id="grid-first-name" type="password" placeholder="Escribe tu contraseña" autocomplete="off" v-model="clave">
+        </div>
+      </div>
+      <input type="submit"
+        class="w-full bg-emerald-500 hover:bg-emerald-700 text-white font-bold py-2 px-4 border border-emerald-600 rounded mt-4"
+        value="CREAR CUENTA">
+    </form>
+  </div>
+  <br>
+  <button @click="traerDocumentos">Ver documentos</button>
+</template>
