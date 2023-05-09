@@ -1,8 +1,12 @@
 <script setup>
-(function () {var script=document.createElement('script');script.src="//cdn.jsdelivr.net/npm/eruda";document.body.appendChild(script); script.onload = function () { eruda.init() } })();
+  (function () {var script=document.createElement('script');script.src="//cdn.jsdelivr.net/npm/eruda";document.body.appendChild(script); script.onload = function () { eruda.init() } })();
   import { ref } from 'vue'
   import axios from 'axios'
+  import { useRouter } from 'vue-router'
   import { v4 as uuidv4 } from 'uuid'
+  
+  const router = useRouter()
+  
   const usuario = ref('')
   const clave = ref('')
   const uuid = uuidv4()
@@ -13,17 +17,17 @@
         usuario: usuario.value,
         clave: clave.value
       }
-      let enviar = await axios.post('http://18.117.196.71/mttzoftware/api/obtenerToken', credenciales)
+      let enviar = await axios.post('http://18.117.196.71/apiv3/src/public/obtenerToken', credenciales)
+      if(enviar.data.estado === 1){
+        localStorage.setItem('token', enviar.data.token)
+      localStorage.setItem('usuario', enviar.data.usuario)
+      localStorage.setItem('uuid', uuid)
+      router.push('/home')
+      }else{
+        alert(enviar.data.mensaje)
+      }
+      
     }catch (error){
-      console.log(error)
-    }
-  }
-  
-  const traerDocumentos = async() => {
-    try {
-      let { data } = await axios.get('http://18.117.196.71/mttzoftware/api/documentos1')
-      console.log(data)
-    }catch(error){
       console.log(error)
     }
   }
@@ -56,6 +60,4 @@
         value="CREAR CUENTA">
     </form>
   </div>
-  <br>
-  <button @click="traerDocumentos">Ver documentos</button>
 </template>

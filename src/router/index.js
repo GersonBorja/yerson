@@ -11,12 +11,32 @@ const router = createRouter({
     {
       path: '/home',
       name: 'home',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/HomeView.vue')
+      component: () => import('../views/HomeView.vue'),
+      meta: {
+        requiresAuth: true
+      }
     }
   ]
+});
+
+// proteger las rutas 
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!localStorage.getItem('token')) {
+      next({
+        path: '/',
+        query: { redirect: to.fullPath }
+      });
+    } else {
+      next()
+    }
+  } else {
+    if (to.path === '/' && localStorage.getItem('token')) {
+      next('/home');
+    } else {
+      next()
+    }
+  }
 })
 
-export default router
+export default router;
