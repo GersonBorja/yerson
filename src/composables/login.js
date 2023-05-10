@@ -1,15 +1,15 @@
+import { defineStore } from 'pinia'
 
-export const useLogin = () => {
-  const idCliente = () => {
-    try {
-      let res = await axios.get(url)
-      data.value = res.data
-    } catch(error) {
-      console.log(error)
-    }
+export const useLogin = defineStore('login', () => {
+  
+  let token = false
+  
+  const agregarToken = (tokenuser) => {
+    token.value = tokenuser
   }
+  
   return {
-    getData,
-    data
+    token,
+    agregarToken
   }
-}
+})

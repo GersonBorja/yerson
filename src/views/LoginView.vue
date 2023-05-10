@@ -4,31 +4,41 @@
   import axios from 'axios'
   import { useRouter } from 'vue-router'
   import { v4 as uuidv4 } from 'uuid'
+  import { useLogin } from '@/stores/login'
+  
+  let useLog = useLogin()
+  //let { token, usuario, agregarToken, agregarUsuario } = useLog
   
   const router = useRouter()
   
-  const usuario = ref('')
+  const usr = ref('')
   const clave = ref('')
   const uuid = uuidv4()
+  let validar = ref(false)
   
   const login = async() => {
+    validar.value = true
     try{
       const credenciales = {
-        usuario: usuario.value,
+        usuario: usr.value,
         clave: clave.value
       }
-      let enviar = await axios.post('http://18.117.196.71/apiv3/src/public/obtenerToken', credenciales)
+      let enviar = await axios.post('http://3.144.185.76/apiv3/src/public/obtenerToken', credenciales)
       if(enviar.data.estado === 1){
         localStorage.setItem('token', enviar.data.token)
-      localStorage.setItem('usuario', enviar.data.usuario)
-      localStorage.setItem('uuid', uuid)
-      router.push('/home')
+        localStorage.setItem('usuario', enviar.data.usuario)
+        localStorage.setItem('uuid', uuid)
+        useLog.agregarUsuario(enviar.data.usuario)
+        useLog.agregarToken(true)
+        
+        router.push('/home')
       }else{
         alert(enviar.data.mensaje)
       }
-      
     }catch (error){
       console.log(error)
+    } finally {
+      validar.value = false
     }
   }
 </script>
@@ -43,7 +53,7 @@
           </label>
           <input
             class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-            id="grid-first-name" type="text" placeholder="Escribe tu usuario" autocomplete="off" v-model="usuario">
+            id="grid-first-name" type="text" placeholder="Escribe tu usuario" autocomplete="off" v-model="usr">
         </div>
         
         <div class="w-full md:w-1/2 px-3 mb-4 md:mb-0">
@@ -56,8 +66,9 @@
         </div>
       </div>
       <input type="submit"
+      :disabled="validar"
         class="w-full bg-emerald-500 hover:bg-emerald-700 text-white font-bold py-2 px-4 border border-emerald-600 rounded mt-4"
-        value="CREAR CUENTA">
+        value="INICIAR SESIÓN">
     </form>
   </div>
 </template>
