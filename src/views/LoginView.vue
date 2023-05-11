@@ -23,7 +23,7 @@
         usuario: usr.value,
         clave: clave.value
       }
-      let enviar = await axios.post('http://3.144.185.76/apiv3/src/public/obtenerToken', credenciales)
+      let enviar = await axios.post('http://206.189.183.124/apiv4/obtenerToken', credenciales)
       if(enviar.data.estado === 1){
         localStorage.setItem('token', enviar.data.token)
         localStorage.setItem('usuario', enviar.data.usuario)

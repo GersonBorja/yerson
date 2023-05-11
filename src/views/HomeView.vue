@@ -8,12 +8,13 @@ const router = useRouter()
 
 
 const documentos = ref([])
-let estado = ref(false)
+const estado = ref(false)
+const checker = ref('')
 const traerDocumentos = async() => {
   try{
-    let { data } = await axios.get('http://3.144.185.76/apiv3/src/public/documentos1')
+    let { data } = await axios.post('http://206.189.183.124/apiv4/documentos1')
     documentos.value = data.documentos
-    console.log(documentos.value)
+    console.log(data)
   }catch(error){
     console.log(error)
   } finally{
@@ -23,6 +24,7 @@ const traerDocumentos = async() => {
 traerDocumentos()
 </script>
 <template>
+  {{ checker }}
   <main>
     <div v-if="estado">
       
@@ -46,7 +48,7 @@ traerDocumentos()
             <li class="w-[20%] font-light text-sm de text-left p-2">{{ productos.cantidad }}</li>
             <li class="w-[10%] text-center p-2">
               <input id="default-checkbox" type="checkbox" value=""
-                class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                class="text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" v-model="checker">
             </li>
           </ul>
         </li>

@@ -23,6 +23,30 @@ const router = createRouter({
       meta: {
         requiresAuth: true
       }
+    },
+        {
+      path: '/receptor/:documentoId',
+      name: 'receptor',
+      component: () => import('@/views/ReceptoresDetallesView.vue'),
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/inventario',
+      name: 'inventario',
+      component: () => import('@/views/InventarioView.vue'),
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/articulo/:articuloid',
+      name: 'articulo',
+      component: () => import('@/views/ArticuloView.vue'),
+      meta: {
+        requiresAuth: true
+      }
     }
   ]
 });

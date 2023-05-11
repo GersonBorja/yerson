@@ -26,11 +26,17 @@ const cerrarSesion = () => {
         <div class="p-4"><b>Pedidos:</b> 1581.1812.1231</div>
         <nav class="border-t border-solid border-gray-800">
           <ul>
-            <router-link to="/home" class="inline-block text-blue-600 p-4 pr-4" active-class="text-black">Home</router-link>|
-            <router-link to="/receptores" class="inline-block text-blue-600 p-4" active-class="text-black">Receptores</router-link>
+            <router-link to="/home" class="inline-block text-blue-600 p-4 pr-4">Home</router-link>|
+            <router-link to="/receptores" class="inline-block text-blue-600 p-4">Receptores</router-link>|
+            <router-link to="/inventario" class="inline-block text-blue-600 p-4">Inventario</router-link>
           </ul>
         </nav>
   </header>
 
   <RouterView />
 </template>
+<style>
+  .router-link-exact-active {
+    color: black;
+  }
+</style>
